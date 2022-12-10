@@ -13,7 +13,7 @@ import {
 import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
 
 import { ProductsService } from 'src/services/products.service';
-import { CreateProductDto, UpdateProductDto } from 'dtos/product.dto';
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/product.dto';
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
