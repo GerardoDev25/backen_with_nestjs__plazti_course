@@ -9,9 +9,8 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
-  Res,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
 
 import { ProductsService } from 'src/services/products.service';
 @Controller('products')
@@ -37,10 +36,10 @@ export class ProductsController {
 
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('productId') productId: string) {
+  getProduct(@Param('productId', ParseIntPipe) productId: number) {
     // response.status(200).send(`param id: ${productId}`);
     // return `param id: ${productId}`;
-    return this.productsService.findOne(+productId);
+    return this.productsService.findOne(productId);
   }
 
   @Post()
