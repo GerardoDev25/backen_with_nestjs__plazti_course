@@ -37,7 +37,7 @@ export class ProductsController {
 
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Res() response: Response, @Param('productId') productId: string) {
+  getProduct(@Param('productId') productId: string) {
     // response.status(200).send(`param id: ${productId}`);
     // return `param id: ${productId}`;
     return this.productsService.findOne(+productId);
@@ -59,8 +59,6 @@ export class ProductsController {
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return {
-      id,
-    };
+    return this.productsService.remove(+id);
   }
 }
