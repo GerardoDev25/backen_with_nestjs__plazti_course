@@ -3,7 +3,6 @@ import {
   Get,
   Param,
   Post,
-  Query,
   Body,
   Put,
   Delete,
@@ -20,7 +19,8 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getProducts(@Query() params: any) {
+  // getProducts(@Query() params: any) {
+  getProducts() {
     // const { limit = 10, offset = 0, brand = '' } = params;
     // return {
     //   limit,
