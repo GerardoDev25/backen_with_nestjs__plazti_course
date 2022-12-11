@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule, HttpService } from '@nestjs/axios';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import * as joi from 'joi';
 
-import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
-import { enviroments } from './config/enviroment';
+import { UsersModule } from './users/users.module';
+
+import { AppController } from './app.controller';
+
+import { AppService } from './app.service';
+
 import config from './config/config';
+import { enviroments } from './config/enviroment';
 
 @Module({
   imports: [
@@ -20,6 +24,11 @@ import config from './config/config';
       envFilePath: enviroments[process.env.NODE_ENV] || '.env',
       load: [config],
       isGlobal: true,
+      validationSchema: joi.object({
+        API_KEY: joi.number().required(),
+        DATA_BASE: joi.string().required(),
+        PORT: joi.number().required(),
+      }),
     }),
   ],
   controllers: [AppController],
