@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,7 +9,16 @@ import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [HttpModule, UsersModule, ProductsModule, DatabaseModule],
+  imports: [
+    HttpModule,
+    UsersModule,
+    ProductsModule,
+    DatabaseModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
