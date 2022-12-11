@@ -27,6 +27,7 @@ import { enviroments } from './config/enviroment';
       validationSchema: joi.object({
         API_KEY: joi.number().required(),
         DATA_BASE: joi.string().required(),
+        DB_PORT: joi.number().required(),
         PORT: joi.number().required(),
       }),
     }),
