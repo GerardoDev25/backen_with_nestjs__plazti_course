@@ -10,24 +10,17 @@ import {
   HttpCode,
 } from '@nestjs/common';
 
-import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
+import { ParseIntPipe } from '../../common/parse-int/parse-int.pipe';
 
-import { ProductsService } from 'src/services/products.service';
-import { CreateProductDto, UpdateProductDto } from 'src/dtos/product.dto';
+import { ProductsService } from '../services/products.service';
+import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  // getProducts(@Query() params: any) {
   getProducts() {
-    // const { limit = 10, offset = 0, brand = '' } = params;
-    // return {
-    //   limit,
-    //   offset,
-    //   brand,
-    // };
-
+    console.log('hola mundo');
     return this.productsService.findAll();
   }
 
@@ -36,20 +29,14 @@ export class ProductsController {
     return `getProductFilter`;
   }
 
-  @Get(':productId')
+  @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('productId', ParseIntPipe) productId: number) {
-    // response.status(200).send(`param id: ${productId}`);
-    // return `param id: ${productId}`;
-    return this.productsService.findOne(productId);
+  getProduct(@Param('id', ParseIntPipe) id: number) {
+    return this.productsService.findOne(id);
   }
 
   @Post()
   create(@Body() payload: CreateProductDto) {
-    // return {
-    //   massage: 'accion de crear',
-    //   payload,
-    // };
     return this.productsService.create(payload);
   }
 
