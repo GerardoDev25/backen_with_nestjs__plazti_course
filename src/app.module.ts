@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './config/enviroment';
+import config from './config/config';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { enviroments } from './config/enviroment';
     DatabaseModule,
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.env',
+      load: [config],
       isGlobal: true,
     }),
   ],
