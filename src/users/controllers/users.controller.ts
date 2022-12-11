@@ -19,20 +19,26 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
-  getProducts() {
+  get() {
     console.log('hola');
     return this.userService.findAll();
   }
 
   @Get('filter')
-  getProductFilter(): string {
+  getFilter(): string {
     return `getUsertFilter`;
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('id', ParseIntPipe) id: number) {
+  getById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOne(id);
+  }
+
+  @Get(':id/orders')
+  @HttpCode(HttpStatus.ACCEPTED)
+  getOrders(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findOrderByUser(id);
   }
 
   @Post()
