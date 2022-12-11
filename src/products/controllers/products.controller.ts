@@ -20,7 +20,6 @@ export class ProductsController {
 
   @Get()
   getProducts() {
-    console.log('hola mundo');
     return this.productsService.findAll();
   }
 
