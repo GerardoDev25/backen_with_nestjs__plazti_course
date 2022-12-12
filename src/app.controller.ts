@@ -19,4 +19,9 @@ export class AppController {
   hello(): string {
     return '/con /';
   }
+
+  @Get('/tasks/')
+  getTasks() {
+    return this.appService.getTasks();
+  }
 }

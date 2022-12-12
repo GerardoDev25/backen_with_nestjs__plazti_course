@@ -7,9 +7,10 @@ export class AppService {
   constructor(
     // @Inject('API_KEY') private apiKey: string,
     // @Inject('TASKS') private tasks: any[],
-    @Inject('MONGO') private database: Db[],
+    @Inject('MONGO') private database: Db,
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {}
+
   getHello(): string {
     // console.log(this.tasks);
     const apiKey = this.configService.apiKey;
@@ -17,9 +18,8 @@ export class AppService {
     return `Hello World! ${apiKey} - ${db}`;
   }
 
-  async getTasks() {
-    // const taskCollection = this.database.collection('tasks');
-    // const tasks = await taskCollection.find().toArray();
-    // console.log(tasks);
+  getTasks() {
+    const taskCollection = this.database.collection('tasks');
+    return taskCollection.find().toArray();
   }
 }
