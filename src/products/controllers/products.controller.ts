@@ -8,11 +8,16 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  FlterProductsDto,
+} from '../dtos/product.dto';
 import { ProductsService } from '../services/products.service';
-import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
 
 // import { ParseIntPipe } from '../../common/parse-int/parse-int.pipe';
 import { MongoIdPipe } from 'src/common/mongo-id/mongo-id.pipe';
@@ -24,8 +29,8 @@ export class ProductsController {
 
   @Get()
   @ApiOperation({ summary: 'list of products' })
-  getProducts() {
-    return this.productsService.findAll();
+  getProducts(@Query() params: FlterProductsDto) {
+    return this.productsService.findAll(params);
   }
 
   @Get('filter')
