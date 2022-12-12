@@ -18,40 +18,27 @@ export class ProductsService {
   async findOne(id: string) {
     const product = await this.productModel.findById(id).exec();
     if (!product) {
-      // return null;
       throw new NotFoundException(`the product with ${id} not found`);
     }
     return product;
   }
 
-  // create(payload: CreateProductDto) {
-  //   this.counterId++;
-  //   const newProduct = {
-  //     id: this.counterId,
-  //     ...payload,
-  //   };
-  //   this.products.push(newProduct);
-  //   return newProduct;
-  // }
+  create(payload: CreateProductDto) {
+    const newProduct = this.productModel.create(payload);
+    return newProduct;
+  }
 
-  // update(id: number, payload: UpdateProductDto) {
-  //   const product = this.findOne(id);
-  //   if (!product) return null;
-  //   const index = this.products.findIndex((item) => item.id === id);
+  update(id: string, payload: UpdateProductDto) {
+    const product = this.productModel
+      .findByIdAndUpdate(id, { $set: payload }, { new: true })
+      .exec();
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return product;
+  }
 
-  //   this.products[index] = {
-  //     ...product,
-  //     ...payload,
-  //   };
-  //   return this.products[index];
-  // }
-
-  // remove(id: number) {
-  //   const index = this.products.findIndex((item) => item.id === id);
-  //   if (index === -1) {
-  //     throw new NotFoundException(`Product #${id} not found`);
-  //   }
-  //   this.products.splice(index, 1);
-  //   return true;
-  // }
+  remove(id: string) {
+    return this.productModel.findByIdAndDelete(id);
+  }
 }
