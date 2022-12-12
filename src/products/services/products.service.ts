@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, FilterQuery } from 'mongoose';
 
 import {
   CreateProductDto,
@@ -16,11 +16,16 @@ export class ProductsService {
   ) {}
 
   findAll(params?: FlterProductsDto) {
-    if (params) {
-      const { limit, offset } = params;
-      return this.productModel.find().skip(offset).limit(limit).exec();
+    if (!params) return this.productModel.find().exec();
+
+    const { limit, offset, maxPrice, minPrice } = params;
+    const filters: FilterQuery<Product> = {};
+
+    if (maxPrice && minPrice) {
+      console.log({ maxPrice, minPrice });
+      filters.price = { $gte: minPrice, $lte: maxPrice };
     }
-    return this.productModel.find().exec();
+    return this.productModel.find(filters).skip(offset).limit(limit).exec();
   }
 
   async findOne(id: string) {
