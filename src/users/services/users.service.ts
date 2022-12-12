@@ -38,7 +38,7 @@ export class UsersService {
     return user;
   }
 
-  findOrderByUser(id: number): Order {
+  async findOrderByUser(id: number) {
     const user = this.findOne(id);
     if (!user) {
       throw new NotFoundException(`the User with ${id} not found`);
@@ -47,7 +47,7 @@ export class UsersService {
     return {
       data: new Date(),
       user,
-      products: this.productsService.findAll(),
+      products: await this.productsService.findAll(),
     };
   }
 
