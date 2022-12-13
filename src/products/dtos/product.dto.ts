@@ -54,7 +54,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   readonly brand: string;
 
-  @ApiProperty({ type: () => [CreateSubDocDto] })
+  @ApiProperty({ type: () => CreateSubDocDto })
   @IsNotEmpty()
   @ValidateNested()
   readonly subDoc: CreateSubDocDto; // 👈 1:1
