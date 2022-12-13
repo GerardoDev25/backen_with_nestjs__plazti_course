@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
+import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
 
 @ApiTags('users')
 @Controller('users')
@@ -32,13 +32,13 @@ export class UsersController {
 
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getById(@Param('id', ParseIntPipe) id: number) {
+  getById(@Param('id', MongoIdPipe) id: string) {
     return this.userService.findOne(id);
   }
 
   @Get(':id/orders')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOrders(@Param('id', ParseIntPipe) id: number) {
+  getOrders(@Param('id', MongoIdPipe) id: string) {
     return this.userService.findOrderByUser(id);
   }
 
@@ -48,12 +48,12 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateUserDto) {
-    return this.userService.update(+id, payload);
+  update(@Param('id', MongoIdPipe) id: string, @Body() payload: UpdateUserDto) {
+    return this.userService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.userService.remove(+id);
+  delete(@Param('id', MongoIdPipe) id: string) {
+    return this.userService.remove(id);
   }
 }
