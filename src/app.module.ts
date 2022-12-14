@@ -30,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
         DATA_BASE: joi.string().required(),
         DB_PORT: joi.number().required(),
         PORT: joi.number().required(),
+        JWT_SECRET: joi.string().required(),
       }),
     }),
     AuthModule,

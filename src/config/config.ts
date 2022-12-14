@@ -8,6 +8,7 @@ export default registerAs('config', () => {
     },
     apiKey: process.env.API_KEY,
     port: process.env.PORT,
+    jwtSecret: process.env.JWT_SECRET,
     mongo: {
       username: process.env.MONGO_INITDB_ROOT_USERNAME,
       password: process.env.MONGO_INITDB_ROOT_PASSWORD,
