@@ -26,7 +26,7 @@ import { AuthModule } from './auth/auth.module';
       load: [config],
       isGlobal: true,
       validationSchema: joi.object({
-        API_KEY: joi.number().required(),
+        API_KEY: joi.string().required(),
         DATA_BASE: joi.string().required(),
         DB_PORT: joi.number().required(),
         PORT: joi.number().required(),
