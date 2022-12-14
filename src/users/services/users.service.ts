@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
-// import { Order } from '../entities/order.entity';
 import { ProductsService } from 'src/products/services/products.service';
 
 @Injectable()
@@ -39,9 +39,18 @@ export class UsersService {
     };
   }
 
-  create(payload: CreateUserDto) {
-    const newUser = this.userModel.create(payload);
-    return newUser;
+  async create(payload: CreateUserDto) {
+    const newUser = new this.userModel(payload);
+    const hashPassword = await bcrypt.hash(newUser.password, 10);
+
+    newUser.password = hashPassword;
+    const model = await newUser.save();
+    const { password, ...rta } = model.toJSON();
+    return rta;
+  }
+
+  findByEmail(email: string) {
+    return this.userModel.findOne({ email }).exec();
   }
 
   update(id: string, payload: UpdateUserDto) {
