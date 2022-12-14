@@ -45,6 +45,7 @@ export class UsersService {
 
     newUser.password = hashPassword;
     const model = await newUser.save();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rta } = model.toJSON();
     return rta;
   }
