@@ -50,8 +50,12 @@ export class UsersService {
     return rta;
   }
 
-  findByEmail(email: string) {
-    return this.userModel.findOne({ email }).exec();
+  async findByEmail(email: string) {
+    const user = await this.userModel.findOne({ email }).exec();
+    if (!user) {
+      throw new NotFoundException(`user don't found`);
+    }
+    return user.toJSON();
   }
 
   update(id: string, payload: UpdateUserDto) {
