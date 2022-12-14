@@ -13,6 +13,7 @@ import { AppService } from './app.service';
 
 import config from './config/config';
 import { enviroments } from './config/enviroment';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { enviroments } from './config/enviroment';
         PORT: joi.number().required(),
       }),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
