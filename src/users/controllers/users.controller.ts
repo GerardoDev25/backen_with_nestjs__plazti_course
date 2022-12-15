@@ -25,6 +25,11 @@ export class UsersController {
     return this.userService.findAll();
   }
 
+  @Get('/task/')
+  getTasks() {
+    return this.userService.getTaks();
+  }
+
   @Get('filter')
   getFilter(): string {
     return `getUsertFilter`;
