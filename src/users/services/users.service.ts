@@ -23,6 +23,7 @@ export class UsersService {
       email: 'jonhdoe@gmail.com',
       password: '123',
       role: 'admin',
+      name: '',
     },
   ];
 
@@ -59,6 +60,7 @@ export class UsersService {
     const newUser = {
       id: this.counterId,
       ...payload,
+      name: '',
     };
     this.users.push(newUser);
     return newUser;
