@@ -15,8 +15,8 @@ export class ProductsService {
     return this.productRepo.find();
   }
 
-  findOne(id: number) {
-    const product = this.productRepo.findBy({ id });
+  async findOne(id: number) {
+    const product = await this.productRepo.findOneBy({ id });
     if (!product) {
       // return null;
       throw new NotFoundException(`the product with ${id} not found`);
@@ -24,34 +24,33 @@ export class ProductsService {
     return product;
   }
 
-  // create(payload: CreateProductDto) {
-  //   this.counterId++;
-  //   const newProduct = {
-  //     id: this.counterId,
-  //     ...payload,
-  //   };
-  //   this.products.push(newProduct);
-  //   return newProduct;
-  // }
+  create(payload: CreateProductDto) {
+    // const newProduct = new Product();
 
-  // update(id: number, payload: UpdateProductDto) {
-  //   const product = this.findOne(id);
-  //   if (!product) return null;
-  //   const index = this.products.findIndex((item) => item.id === id);
+    // const { description, image, name, price, stock } = payload;
 
-  //   this.products[index] = {
-  //     ...product,
-  //     ...payload,
-  //   };
-  //   return this.products[index];
-  // }
+    // newProduct.image = image;
+    // newProduct.name = name;
+    // newProduct.description = description;
+    // newProduct.price = price;
+    // newProduct.stock = stock;
 
-  // remove(id: number) {
-  //   const index = this.products.findIndex((item) => item.id === id);
-  //   if (index === -1) {
-  //     throw new NotFoundException(`Product #${id} not found`);
-  //   }
-  //   this.products.splice(index, 1);
-  //   return true;
-  // }
+    const newProduct = this.productRepo.create(payload);
+
+    console.log(newProduct);
+
+    return this.productRepo.save(newProduct);
+  }
+
+  async update(id: number, payload: UpdateProductDto) {
+    const product = await this.findOne(id);
+
+    this.productRepo.merge(product, payload);
+
+    return this.productRepo.save(product);
+  }
+
+  remove(id: number) {
+    return this.productRepo.delete(id);
+  }
 }
