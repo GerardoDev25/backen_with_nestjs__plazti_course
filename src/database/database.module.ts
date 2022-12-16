@@ -23,6 +23,8 @@ const API_KEY_PRO = 'PROD_123456789';
           username: user,
           password,
           database,
+          synchronize: true,
+          autoLoadEntities: true,
         };
       },
     }),
