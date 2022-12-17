@@ -7,6 +7,7 @@ import { Client } from 'pg';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { ProductsService } from 'src/products/services/products.service';
+import { CustomersService } from './customers.service';
 
 @Injectable()
 export class UsersService {
@@ -15,10 +16,11 @@ export class UsersService {
     private configService: ConfigService,
     @Inject('PG') private clientPg: Client,
     @InjectRepository(User) private userRepo: Repository<User>,
+    private customersService: CustomersService,
   ) {}
 
   findAll() {
-    return this.userRepo.find();
+    return this.userRepo.find({ relations: ['customer'] });
   }
 
   findOne(id: number) {
@@ -42,9 +44,13 @@ export class UsersService {
   //   };
   // }
 
-  create(payload: CreateUserDto) {
+  async create(payload: CreateUserDto) {
     const newUser = this.userRepo.create(payload);
-    return newUser;
+    if (payload.customerId) {
+      const customer = await this.customersService.findOne(payload.customerId);
+      newUser.customer = customer;
+    }
+    return this.userRepo.save(newUser);
   }
 
   async update(id: number, payload: UpdateUserDto) {

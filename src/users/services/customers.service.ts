@@ -25,7 +25,7 @@ export class CustomersService {
 
   create(payload: CreateCustomerDto) {
     const newCustomer = this.customerRepo.create(payload);
-    return newCustomer;
+    return this.customerRepo.save(newCustomer);
   }
 
   async update(id: number, payload: UpdateCustomerDto) {
