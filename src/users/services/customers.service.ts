@@ -1,62 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
 import { Customer } from '../entities/customer.entity';
 
 @Injectable()
 export class CustomersService {
-  private counterId = 1;
-
-  private customers: Customer[] = [
-    {
-      id: 1,
-      lastName: 'doe',
-      name: 'jonh',
-      phone: '2321',
-    },
-  ];
+  constructor(
+    @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+  ) {}
 
   findAll() {
-    return this.customers;
+    return this.customerRepo.find();
   }
 
   findOne(id: number) {
-    const customer = this.customers.find((item) => item.id === id);
+    const customer = this.customerRepo.findOneBy({ id });
     if (!customer) {
-      // return null;
-      throw new NotFoundException(`the Customer with ${id} not found`);
+      throw new NotFoundException(`the customer with ${id} not found`);
     }
     return customer;
   }
 
   create(payload: CreateCustomerDto) {
-    this.counterId++;
-    const newCustomer = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.customers.push(newCustomer);
+    const newCustomer = this.customerRepo.create(payload);
     return newCustomer;
   }
 
-  update(id: number, payload: UpdateCustomerDto) {
-    const customer = this.findOne(id);
-    if (!customer) return null;
-    const index = this.customers.findIndex((item) => item.id === id);
-
-    this.customers[index] = {
-      ...customer,
-      ...payload,
-    };
-    return this.customers[index];
+  async update(id: number, payload: UpdateCustomerDto) {
+    const customer = await this.findOne(id);
+    this.customerRepo.merge(customer, payload);
+    return this.customerRepo.save(customer);
   }
 
   remove(id: number) {
-    const index = this.customers.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`Customer #${id} not found`);
-    }
-    this.customers.splice(index, 1);
-    return true;
+    return this.customerRepo.delete(id);
   }
 }
