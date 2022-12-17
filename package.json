@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "node node_modules/.bin/typeorm-ts-node-commonjs",
     "migration:generate": "yarn typeorm migration:generate -d src/database/dataSource.ts",
-    "migrations:run": "yarn typeorm migration:run -- -d src/database/dataSource.ts"
+    "migrations:run": "yarn typeorm migration:run -- -d src/database/dataSource.ts",
+    "migrations:drop": "yarn typeorm schema:drop"
   },
   "dependencies": {
     "@nestjs/axios": "^1.0.0",
