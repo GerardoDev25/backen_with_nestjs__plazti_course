@@ -1,59 +1,44 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/category.dto';
 import { Category } from '../entities/category.entity';
 
 @Injectable()
 export class CategoriesService {
-  private counterId = 1;
-
-  private categories: Category[] = [
-    {
-      id: 1,
-      name: 'test',
-    },
-  ];
+  constructor(
+    @InjectRepository(Category) private categoryRepo: Repository<Category>,
+  ) {}
 
   findAll() {
-    return this.categories;
+    return this.categoryRepo.find();
   }
 
-  findOne(id: number) {
-    const category = this.categories.find((item) => item.id === id);
+  async findOne(id: number) {
+    const category = await this.categoryRepo.findOne({
+      where: { id },
+    });
     if (!category) {
-      // return null;
-      throw new NotFoundException(`the Category with ${id} not found`);
+      throw new NotFoundException(`the category with ${id} not found`);
     }
     return category;
   }
 
   create(payload: CreateCategoryDto) {
-    this.counterId++;
-    const newCategory = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.categories.push(newCategory);
-    return newCategory;
+    const newcategory = this.categoryRepo.create(payload);
+
+    return this.categoryRepo.save(newcategory);
   }
 
-  update(id: number, payload: UpdateCategoryDto) {
-    const category = this.findOne(id);
-    if (!category) return null;
-    const index = this.categories.findIndex((item) => item.id === id);
+  async update(id: number, payload: UpdateCategoryDto) {
+    const category = await this.findOne(id);
 
-    this.categories[index] = {
-      ...category,
-      ...payload,
-    };
-    return this.categories[index];
+    this.categoryRepo.merge(category, payload);
+
+    return this.categoryRepo.save(category);
   }
 
   remove(id: number) {
-    const index = this.categories.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`Category #${id} not found`);
-    }
-    this.categories.splice(index, 1);
-    return true;
+    return this.categoryRepo.delete(id);
   }
 }
