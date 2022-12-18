@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { Client } from 'pg';
+import * as bcrypt from 'bcrypt';
 
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
@@ -26,7 +27,15 @@ export class UsersService {
   findOne(id: number) {
     const user = this.userRepo.findOneBy({ id });
     if (!user) {
-      throw new NotFoundException(`the User with ${id} not found`);
+      throw new NotFoundException(`the User with id: ${id} not found`);
+    }
+    return user;
+  }
+
+  findByEmail(email: string) {
+    const user = this.userRepo.findOneBy({ email });
+    if (!user) {
+      throw new NotFoundException(`the User with email: ${email} not found`);
     }
     return user;
   }
@@ -46,6 +55,10 @@ export class UsersService {
 
   async create(payload: CreateUserDto) {
     const newUser = this.userRepo.create(payload);
+
+    const hashPassword = await bcrypt.hash(newUser.password, 10);
+    newUser.password = hashPassword;
+
     if (payload.customerId) {
       const customer = await this.customersService.findOne(payload.customerId);
       newUser.customer = customer;
@@ -55,6 +68,7 @@ export class UsersService {
 
   async update(id: number, payload: UpdateUserDto) {
     const user = await this.findOne(id);
+
     this.userRepo.merge(user, payload);
     return this.userRepo.save(user);
   }
