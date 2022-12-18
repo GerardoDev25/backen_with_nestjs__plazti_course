@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import * as joi from 'joi';
 
+import { AuthModule } from './auth/auth.module';
+
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
@@ -31,6 +33,7 @@ import { enviroments } from './config/enviroment';
         PORT: joi.number().required(),
       }),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
