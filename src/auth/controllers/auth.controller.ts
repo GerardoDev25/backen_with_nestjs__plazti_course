@@ -13,7 +13,6 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   login(@Req() req: Request) {
     const user = req.user as User;
-    return user;
-    // return this.authService.generateJWT(user);
+    return this.authService.generateJWT(user);
   }
 }
