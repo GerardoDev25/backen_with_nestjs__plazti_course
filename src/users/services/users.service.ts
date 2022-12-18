@@ -40,19 +40,6 @@ export class UsersService {
     return user;
   }
 
-  // async findOrderByUser(id: number) {
-  //   const user = this.findOne(id);
-  //   if (!user) {
-  //     throw new NotFoundException(`the User with ${id} not found`);
-  //   }
-
-  //   return {
-  //     data: new Date(),
-  //     user,
-  //     products: await this.productsService.findAll(),
-  //   };
-  // }
-
   async create(payload: CreateUserDto) {
     const newUser = this.userRepo.create(payload);
 

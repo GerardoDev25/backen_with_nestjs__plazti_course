@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Repository } from 'typeorm';
 
-import { CreateOrderItemDto, UpdateOrderItemDto } from '../dtos/order-item.dto';
+import { CreateOrderItemDto } from '../dtos/order-item.dto';
 import { OrderItem } from '../entities/order-item.entity';
 import { Order } from '../entities/order.entity';
 
@@ -32,6 +32,4 @@ export class OrderItemService {
 
     return this.itemRepo.save(item);
   }
-
-  // async update(payload: UpdateOrderItemDto) {}
 }

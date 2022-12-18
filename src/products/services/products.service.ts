@@ -45,23 +45,12 @@ export class ProductsService {
       relations: ['categories', 'brand'],
     });
     if (!product) {
-      // return null;
       throw new NotFoundException(`the product with ${id} not found`);
     }
     return product;
   }
 
   async create(payload: CreateProductDto) {
-    // const newProduct = new Product();
-
-    // const { description, image, name, price, stock } = payload;
-
-    // newProduct.image = image;
-    // newProduct.name = name;
-    // newProduct.description = description;
-    // newProduct.price = price;
-    // newProduct.stock = stock;
-
     const newProduct = this.productRepo.create(payload);
 
     if (payload.brandId) {
