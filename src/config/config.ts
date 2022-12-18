@@ -4,6 +4,7 @@ export default registerAs('config', () => {
   return {
     apiKey: process.env.API_KEY,
     port: process.env.PORT,
+    jwtSecret: process.env.JWT_SECRET,
     database: {
       name: process.env.DATA_BASE,
       port: process.env.DB_PORT,
